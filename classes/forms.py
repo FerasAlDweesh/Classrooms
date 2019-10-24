@@ -1,22 +1,26 @@
 from django import forms
-from .models import Classroom
+from .models import Classroom, Student
 from django.contrib.auth.models import User
 
 class ClassroomForm(forms.ModelForm):
     class Meta:
         model = Classroom
-        fields = '__all__'
+        exclude = ["teacher"]
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        exclude = ["classroom"]
 
 class RegisterForm(forms.ModelForm):
-	class Meta:
-		model = User
-		fields = ["username", "password", "first_name", "last_name"]
+    class Meta:
+        model = User
+        fields = ["email", "username", "password", "first_name", "last_name"]
 
-		widgets={
+        widgets={
         'password': forms.PasswordInput(),
         }
 
-class LoginForm(forms.ModelForm):
-	username = forms.CharField(required=True)
+class LoginForm(forms.Form):
+    username = forms.CharField(required=True)
     password = forms.CharField(required=True, widget=forms.PasswordInput())
-
